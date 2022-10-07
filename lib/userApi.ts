@@ -76,7 +76,7 @@ export const userApi = createApi({
         invalidatesTags:['Users']
 
       }),
-      addUpdateClaims: builder.mutation<void, { policyId: string,reqAmount: number,id:string , status:string} >({
+      addUpdateClaims: builder.mutation<void, { policyId: string,reqAmount?: number,id:string , status?:string} >({
         query: (val) => ({
             url: `/user/claims/${val.id}`,
             method: "PATCH",

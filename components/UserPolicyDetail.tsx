@@ -32,10 +32,10 @@ function UserPolicyDetail(props: any) {
     reset,
     formState: { errors },
   } = useForm<FormValues>({ defaultValues: { policy: "", users: "" } });
-  const [limit, setLimit] = useState();
-  const [amount, setAmount] = useState();
-  const [tableData,setTableData]   = useState([])
-  const [reqAmount,setReqAmount] = useState()
+  const [limit, setLimit] = useState<any>();
+  const [amount, setAmount] = useState<any>();
+  const [tableData,setTableData]   = useState<any>([])
+  const [reqAmount,setReqAmount] = useState<any>();
   const [addUpdateClaims , {data:editResponse}] = useAddUpdateClaimsMutation()
 
 
@@ -56,9 +56,9 @@ const claimButton = (e:any,data:any) =>{
     addUpdateClaims({id:data.users.split(',')[1],reqAmount:reqAmount,policyId:data.policy.split(',')[3]})
     setTableData([])
     reset()
-    setLimit('')
+    setLimit("")
     setAmount('')
-    setReqAmount()
+    setReqAmount('')
 
 
     
@@ -69,7 +69,7 @@ const deleteButton = (e:any) =>{
     reset()
     setLimit("")
     setAmount("")
-    setReqAmount()
+    setReqAmount('')
 
 
 }
@@ -151,7 +151,7 @@ const deleteButton = (e:any) =>{
           </tr>
         </thead>
         <tbody>
-          {tableData.map((data: { users:string; policy:string; amount: string; limit: string; name: string },index) => (
+          {tableData.map((data: { users:string; policy:string; amount: string; limit: string; name: string },index:string) => (
             <tr key={data.name}>
               <td>
                 {index +1}
