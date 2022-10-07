@@ -15,7 +15,7 @@ export const userApi = createApi({
       return action.payload[reducerPath];
     }
   },
-  tagTypes: ['Users','UsersId'],
+  tagTypes: ['Users','UsersId','Policy'],
   endpoints: (builder) => ({
     
     fetchUser: builder.query<IUser[], void>({
@@ -26,6 +26,15 @@ export const userApi = createApi({
         query: (id) => (`/user/get/${id}`),
         providesTags:['UsersId']
 
+      }),
+      getPolicyStatus:  builder.query<IUser[], void>({
+        query: () => ('/user/getPolicies'),
+        providesTags: (result, error, arg) =>
+        {  console.log(result);
+        
+        return result
+          ? [...result.map(({ id }) => ({ type: 'Policy' as const, id })), 'Policy']
+          : ['Policy']}
       }),
       getAlbumRating: builder.query({
         query: () => ('/user/getranking'),
@@ -66,7 +75,18 @@ export const userApi = createApi({
         }),
         invalidatesTags:['Users']
 
-      })
+      }),
+      addUpdateClaims: builder.mutation<void, { policyId: string,reqAmount: number,id:string , status:string} >({
+        query: (val) => ({
+            url: `/user/claims/${val.id}`,
+            method: "PATCH",
+            body: val.reqAmount ? {reqAmount:val.reqAmount,policyId:val.policyId} : {status:val.status,policyId:val.policyId},
+          }),
+          invalidatesTags: (result, error, arg) => [{ type: 'Policy', id: arg.id }],
+
+
+      }),
+    
   }),
   
 });
@@ -80,8 +100,10 @@ export const {
   useEditRatingsMutation,
   useFetchUserOnIdQuery,
   useGetAlbumRatingQuery,
+  useAddUpdateClaimsMutation,
+  useGetPolicyStatusQuery,
   util: { getRunningOperationPromises },
 } = userApi;
 
 // export endpoints for use in SSR
-export const { fetchUser ,fetchUserOnId } = userApi.endpoints;
+export const { fetchUser ,fetchUserOnId,getPolicyStatus } = userApi.endpoints;

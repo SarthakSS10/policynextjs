@@ -14,7 +14,7 @@ const PolicyTable: React.FC<Propsvalue> = (props) => {
   useEffect(() => {
     console.log("hiiii", props);
     setTableData(props.users);
-  }, [props]);
+  }, [props]);  
 
   const deleteButton = async (e: any, id: string) => {
     e.preventDefault();
